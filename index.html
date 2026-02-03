@@ -1,0 +1,1325 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Multi-Agentic AI Systems: A Complete Guide to MCP Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Canela:wght@300;400;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --navy: #1e293b;
+            --gold: #d4af37;
+            --muted-gold: #b8941f;
+            --light-gray: #f8fafc;
+            --medium-gray: #64748b;
+            --dark-gray: #334155;
+        }
+        
+        .font-canela { font-family: 'Canela', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--navy) 0%, #0f172a 100%);
+        }
+        
+        .gold-accent { color: var(--gold); }
+        .navy-bg { background-color: var(--navy); }
+        .light-gray-bg { background-color: var(--light-gray); }
+        
+        .toc-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 2rem 1.5rem;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+        
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+            padding-left: 0.75rem;
+        }
+        
+        .toc-link:hover,
+        .toc-link.active {
+            color: var(--gold);
+            border-left-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+        
+        .toc-link.level-2 {
+            margin-left: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(45deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.7));
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 2rem;
+            align-items: start;
+        }
+        
+        .bento-main {
+            grid-row: 1 / 3;
+        }
+        
+        .chart-container { /* This style is no longer used, but keeping for reference if other non-chart elements might use it */
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .citation-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted var(--gold);
+        }
+        
+        .citation-link:hover {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 4rem 0;
+        }
+        
+        @media (max-width: 1024px) {
+            .toc-fixed {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .toc-fixed.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+            
+            .bento-main {
+                grid-row: auto;
+            }
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
+        .pull-quote {
+            border-left: 4px solid var(--gold);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.05), transparent);
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.125rem;
+            color: var(--navy);
+        }
+    </style>
+  <base target="_blank">
+</head>
+
+  <body class="font-inter bg-gray-50 smooth-scroll">
+    <!-- Table of Contents -->
+    <nav class="toc-fixed">
+      <div class="mb-8">
+        <h3 class="font-canela font-bold text-lg gold-accent mb-4">Contents</h3>
+        <div class="space-y-1">
+          <a class="toc-link" href="#introduction">Introduction</a>
+          <a class="toc-link" href="#understanding-agents">1. Understanding Multi-Agentic AI</a>
+          <a class="toc-link level-2" href="#what-is-multi-agent">1.1 What Is a Multi-Agent System?</a>
+          <a class="toc-link level-2" href="#why-matters">1.2 Why Multi-Agent Systems Matter</a>
+          <a class="toc-link" href="#mcp-explained">2. MCP Explained Simply</a>
+          <a class="toc-link level-2" href="#what-is-mcp">2.1 What MCP Actually Means</a>
+          <a class="toc-link level-2" href="#usb-c-port">2.2 MCP as &#34;USB-C Port for AI&#34;</a>
+          <a class="toc-link level-2" href="#mcp-role">2.3 MCP&#39;s Role in Multi-Agent Systems</a>
+          <a class="toc-link" href="#architecture">3. System Architecture</a>
+          <a class="toc-link level-2" href="#core-components">3.1 Core Components</a>
+          <a class="toc-link level-2" href="#how-layers-work">3.2 How Layers Work Together</a>
+          <a class="toc-link" href="#prototype-development">4. Prototype Development</a>
+          <a class="toc-link level-2" href="#phase-1">4.1 Phase 1: Foundation</a>
+          <a class="toc-link level-2" href="#phase-2">4.2 Phase 2: MCP Setup</a>
+          <a class="toc-link level-2" href="#phase-3">4.3 Phase 3: Agent Design</a>
+          <a class="toc-link level-2" href="#phase-4">4.4 Phase 4: Communication</a>
+          <a class="toc-link level-2" href="#phase-5">4.5 Phase 5: Integration</a>
+          <a class="toc-link level-2" href="#phase-6">4.6 Phase 6: Deployment</a>
+          <a class="toc-link" href="#example">5. Practical Example</a>
+          <a class="toc-link" href="#technologies">6. Key Technologies</a>
+          <a class="toc-link" href="#pitfalls">7. Common Pitfalls</a>
+          <a class="toc-link" href="#future">8. The Future</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Hero Section -->
+      <section class="hero-gradient relative overflow-hidden">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 px-8 py-16">
+          <div class="max-w-6xl mx-auto">
+            <div class="bento-grid">
+              <div class="bento-main">
+                <div class="mb-8">
+                  <span class="text-gold-accent text-sm font-medium tracking-wide uppercase">Technical Guide</span>
+                  <h1 class="font-canela text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mt-4">
+                    Building a Multi-Agentic AI System Prototype:
+                    <em class="text-gold-accent block mt-2">A Practical Guide to MCP Architecture</em>
+                  </h1>
+                  <p class="text-xl text-gray-300 mt-6 max-w-3xl leading-relaxed">
+                    Unlock the power of collaborative AI agents through standardized protocols,
+                    seamless tool integration, and coordinated autonomy.
+                  </p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-white/20">
+                  <h3 class="font-canela text-xl font-bold text-white mb-4">Key Insight</h3>
+                  <p class="text-gray-200 text-lg leading-relaxed">
+                    Building a multi-agentic AI prototype starts with defining clear goals, then layering three core pieces:
+                    specialized agents (each with a distinct job), the <strong class="text-gold-accent">Model Context Protocol (MCP)</strong>
+                    as the &#34;USB-C for AI&#34; that lets agents plug into any tool without custom code, and an
+                    <strong class="text-gold-accent">A2A protocol</strong> for agents to talk to each other.
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-6">
+                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                  <h4 class="font-canela text-lg font-bold text-white mb-3">Adoption Snapshot</h4>
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                      <span class="text-gray-300 text-sm">Organizations using AI agents</span>
+                      <span class="text-gold-accent font-bold">57%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span class="text-gray-300 text-sm">Planning expansion</span>
+                      <span class="text-gold-accent font-bold">96%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                  <h4 class="font-canela text-lg font-bold text-white mb-3">Performance Gains</h4>
+                  <div class="space-y-2">
+                    <div class="text-gold-accent font-bold text-xl">50%</div>
+                    <div class="text-gray-300 text-sm">Faster modernization</div>
+                  </div>
+                  <div class="space-y-2 mt-3">
+                    <div class="text-gold-accent font-bold text-xl">40%</div>
+                    <div class="text-gray-300 text-sm">Cost reduction</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Content Areas -->
+      <div class="max-w-4xl mx-auto px-4 md:px-8 py-16">
+        <!-- Introduction -->
+        <section class="mb-16" id="introduction">
+          <div class="pull-quote font-canela">
+            &#34;The future of AI lies not in building ever-larger monolithic models, but in orchestrating networks of specialized agents that can adapt to diverse challenges through collaboration.&#34;
+          </div>
+        </section>
+
+        <!-- Section 1: Understanding Multi-Agentic AI Systems -->
+        <section class="mb-16" id="understanding-agents">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">Understanding Multi-Agentic AI Systems</h2>
+
+          <div class="prose prose-lg max-w-none" id="what-is-multi-agent">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">What Is a Multi-Agentic AI System?</h3>
+
+            <p class="text-gray-700 leading-relaxed mb-6">
+              A <strong>multi-agentic AI system</strong> represents a fundamental paradigm shift from traditional single-model AI architectures to distributed, collaborative intelligence networks. At its core, such a system comprises multiple <strong>autonomous AI agents</strong>—each possessing specialized capabilities, independent reasoning engines, and self-directed operational authority—that work in concert to achieve complex objectives that would be intractable for any single agent to accomplish alone <a class="citation-link" href="https://www.intuz.com/blog/build-multi-agent-system-with-a2a-mcp-server">[64]</a>.
+            </p>
+
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-6 my-8">
+              <h4 class="font-canela text-lg font-bold text-blue-900 mb-3">Core Characteristics</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-3">
+                  <div><strong class="text-blue-900">Autonomy:</strong> Independent decision-making without external control</div>
+                  <div><strong class="text-blue-900">Social ability:</strong> Communication and coordination with other agents</div>
+                </div>
+                <div class="space-y-3">
+                  <div><strong class="text-blue-900">Reactivity:</strong> Prompt response to environmental changes</div>
+                  <div><strong class="text-blue-900">Proactivity:</strong> Anticipatory action based on predicted needs</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-amber-50 rounded-lg p-6 my-8">
+              <h4 class="font-canela text-xl font-bold text-amber-900 mb-4">Real-World Analogy: The Orchestra</h4>
+              <p class="text-amber-800 leading-relaxed">
+                The orchestra conductor analogy provides intuitive grounding for understanding multi-agent coordination. Each AI agent corresponds to a skilled musician possessing deep expertise with their instrument—violins, cellos, brass, percussion—each capable of producing beautiful music independently. However, without coordination, simultaneous performance yields cacophony rather than symphony. The conductor provides <strong>temporal alignment, dynamic balance, and interpretive unity</strong> that transforms individual excellence into collective artistry <a class="citation-link" href="https://www.intuz.com/blog/how-to-build-multi-ai-agent-systems">[102]</a>.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-12" id="why-matters">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">Why Multi-Agent Systems Matter</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-puzzle-piece text-blue-600 text-xl"></i>
+                </div>
+                <h4 class="font-canela text-lg font-bold text-gray-800 mb-3">Solving Complex Problems</h4>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Overcome limitations of single-agent architectures through distributed problem decomposition and specialized expertise.
+                </p>
+              </div>
+
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-users-cog text-green-600 text-xl"></i>
+                </div>
+                <h4 class="font-canela text-lg font-bold text-gray-800 mb-3">Enabling Specialization</h4>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Apply economic principles of comparative advantage through capability specialization and division of labor.
+                </p>
+              </div>
+
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-expand-arrows-alt text-purple-600 text-xl"></i>
+                </div>
+                <h4 class="font-canela text-lg font-bold text-gray-800 mb-3">Improving Scalability</h4>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Achieve horizontal scaling and fault tolerance through distributed architecture and redundancy.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8">
+              <h4 class="font-canela text-xl font-bold text-gray-800 mb-4">Enterprise Impact</h4>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Research indicates multi-agent approaches can <strong>accelerate modernization timelines by up to 50%</strong> and <strong>reduce operational costs by more than 40%</strong> compared to single-agent or traditional automation approaches <a class="citation-link" href="https://www.linkedin.com/pulse/how-build-multi-agent-ai-step-by-step-framework-technology-leaders-2eoxf">[103]</a>.
+              </p>
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span class="text-sm text-gray-600">Proven ROI</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span class="text-sm text-gray-600">Scalable Architecture</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <span class="text-sm text-gray-600">Future-Ready</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 2: MCP Explained -->
+        <section class="mb-16" id="mcp-explained">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">The MCP (Master Control Program) Explained Simply</h2>
+
+          <div class="mb-12" id="what-is-mcp">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">What MCP Actually Means Today</h3>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+              <div class="flex items-start space-x-4 mb-6">
+                <div class="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-plug text-amber-600 text-2xl"></i>
+                </div>
+                <div>
+                  <h4 class="font-canela text-xl font-bold text-gray-800 mb-2">Model Context Protocol (Technical Standard)</h4>
+                  <p class="text-gray-600 leading-relaxed">
+                    An open standard developed by Anthropic that fundamentally restructures how AI applications interface with external data sources, tools, and services through standardized client-server architecture <a class="citation-link" href="https://www.gravitee.io/blog/mcp-model-context-protocol-agentic-ai">[101]</a>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-gray-50 rounded-lg p-4">
+                  <h5 class="font-bold text-gray-800 mb-2">MCP Hosts</h5>
+                  <p class="text-sm text-gray-600">AI applications requiring tool access (Claude Desktop, IDE plugins)</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                  <h5 class="font-bold text-gray-800 mb-2">MCP Clients</h5>
+                  <p class="text-sm text-gray-600">Protocol connectors maintaining server connections</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                  <h5 class="font-bold text-gray-800 mb-2">MCP Servers</h5>
+                  <p class="text-sm text-gray-600">Programs exposing specific capabilities through standardized interfaces</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-8">
+              <h4 class="font-canela text-lg font-bold text-gray-800 mb-4">From Fiction to Reality</h4>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                The acronym &#34;MCP&#34; deliberately evokes the <strong>Master Control Program</strong> from Disney&#39;s 1982 film Tron, creating a bridge between fictional AI and practical system design. Where Tron&#39;s MCP represented centralized control through domination, the Model Context Protocol enables coordination through standardization—distributing rather than concentrating power <a class="citation-link" href="https://arinco.com.au/blog/mcp-what-is-it-and-why-should-you-care/">[88]</a>.
+              </p>
+              <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <i class="fas fa-film"></i>
+                <span>Homage and reclamation: acknowledging sci-fi influence while demonstrating beneficial implementation</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-12" id="usb-c-port">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">MCP as the &#34;USB-C Port for AI&#34;</h3>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-8 mb-8">
+              <div class="flex items-center justify-between mb-6">
+                <h4 class="font-canela text-xl font-bold text-blue-900">Universal Connector Standard</h4>
+                <img alt="USB-C connector" class="w-16 h-16 rounded-lg" src="https://kimi-web-img.moonshot.cn/img/www.te.com.cn/dc75c8335be27c2ae61298dc4db0c189ec880bcf.jpg" size="small" aspect="square" style="photo" query="USB-C connector" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+              </div>
+              <p class="text-blue-800 leading-relaxed mb-6">
+                USB-C succeeded multiple competing connector standards with a single reversible, high-capability interface. Similarly, MCP unifies fragmented AI integration patterns into one standardized protocol <a class="citation-link" href="https://www.gravitee.io/blog/mcp-model-context-protocol-agentic-ai">[101]</a>.
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-4">
+                  <h5 class="font-bold text-blue-900 mb-3">Before MCP</h5>
+                  <ul class="text-sm text-blue-800 space-y-1">
+                    <li>• Custom API wrappers for each tool</li>
+                    <li>• Embedded function calling</li>
+                    <li>• Prompt-engineered tool use</li>
+                    <li>• Hardcoded service connections</li>
+                  </ul>
+                </div>
+                <div class="bg-white rounded-lg p-4">
+                  <h5 class="font-bold text-blue-900 mb-3">After MCP</h5>
+                  <ul class="text-sm text-blue-800 space-y-1">
+                    <li>• Single standardized protocol</li>
+                    <li>• Plug-and-play connectivity</li>
+                    <li>• Semantic capability discovery</li>
+                    <li>• Universal compatibility</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h4 class="font-canela text-xl font-bold text-gray-800 mb-6">Eliminating Custom Integration Code</h4>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                  <h5 class="font-bold text-gray-800 mb-4">Traditional Approach (N×M Problem)</h5>
+                  <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-sm font-mono text-red-800">
+                    Agent A → Custom Integration → Tool X
+                    <br/>
+                    Agent A → Custom Integration → Tool Y
+                    <br/>
+                    Agent B → Different Integration → Tool X
+                  </div>
+                </div>
+                <div>
+                  <h5 class="font-bold text-gray-800 mb-4">MCP Approach (N+M Solution)</h5>
+                  <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-sm font-mono text-green-800">
+                    Agent A → MCP Client → MCP Server (Tool X)
+                    <br/>
+                    Agent A → MCP Client → MCP Server (Tool Y)
+                    <br/>
+                    Agent B → MCP Client → MCP Server (Tool X)
+                  </div>
+                </div>
+              </div>
+              <p class="text-gray-600 text-sm mt-4">
+                Network effects compound as adoption grows: more MCP servers attract more MCP clients, creating virtuous cycles that establish transformative standards.
+              </p>
+            </div>
+          </div>
+
+          <div id="mcp-role">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">MCP&#39;s Role in Multi-Agent Systems</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-conducting text-purple-600 text-xl"></i>
+                </div>
+                <h4 class="font-canela text-lg font-bold text-purple-900 mb-3">Orchestra Conductor</h4>
+                <p class="text-purple-800 text-sm leading-relaxed">
+                  MCP functions as shared infrastructure enabling specialized agents to access common resources without chaotic contention <a class="citation-link" href="https://www.intuz.com/blog/how-to-build-multi-ai-agent-systems">[102]</a>.
+                </p>
+              </div>
+
+              <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-handshake text-blue-600 text-xl"></i>
+                </div>
+                <h4 class="font-canela text-lg font-bold text-blue-900 mb-3">Conflict Resolution</h4>
+                <p class="text-blue-800 text-sm leading-relaxed">
+                  Explicit capability modeling and structured operation semantics enable intelligent conflict detection and resolution between competing agent actions.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h4 class="font-canela text-xl font-bold text-gray-800 mb-6">Enterprise Integration Capabilities</h4>
+              <div class="space-y-6">
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <i class="fas fa-shield-alt text-amber-600"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-gray-800 mb-2">Policy Embedding</h5>
+                    <p class="text-gray-600 text-sm">Business rules enforced at capability boundaries ensure uniform compliance regardless of initiating agent.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <i class="fas fa-eye text-green-600"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-gray-800 mb-2">Observability</h5>
+                    <p class="text-gray-600 text-sm">Structured logging of all interactions provides forensic detail for debugging and optimization.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <i class="fas fa-dollar-sign text-blue-600"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-gray-800 mb-2">Cost Management</h5>
+                    <p class="text-gray-600 text-sm">Utilization tracking and chargeback prevent budget overruns from unconstrained agent loops.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 3: Architecture -->
+        <section class="mb-16" id="architecture">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">Architecture of a Multi-Agent System with MCP</h2>
+
+          <div class="mb-12" id="core-components">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">Core Components</h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-crown text-blue-600"></i>
+                    </div>
+                    <h4 class="font-canela text-lg font-bold text-gray-800">Host Agent</h4>
+                  </div>
+                  <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                    Central coordinator managing task distribution, intent understanding, decomposition, and progress monitoring.
+                  </p>
+                  <div class="bg-blue-50 rounded-lg p-3 text-xs text-blue-800">
+                    <strong>Key Activities:</strong> Natural language processing, dynamic planning, agent selection, state tracking
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-network-wired text-green-600"></i>
+                    </div>
+                    <h4 class="font-canela text-lg font-bold text-gray-800">MCP Layer</h4>
+                  </div>
+                  <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                    Standardized interface decoupling agents from specific tool implementations through client-server architecture.
+                  </p>
+                  <div class="bg-green-50 rounded-lg p-3 text-xs text-green-800">
+                    <strong>Components:</strong> Client libraries, server processes, transport infrastructure
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-comments text-purple-600"></i>
+                    </div>
+                    <h4 class="font-canela text-lg font-bold text-gray-800">A2A Layer</h4>
+                  </div>
+                  <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                    Agent-to-Agent protocol enabling direct peer-to-peer communication for coordination and task management <a class="citation-link" href="https://www.kdnuggets.com/building-ai-agents-a2a-vs-mcp-explained-simply">[99]</a>.
+                  </p>
+                  <div class="bg-purple-50 rounded-lg p-3 text-xs text-purple-800">
+                    <strong>Features:</strong> Agent Cards, task lifecycle, flexible message patterns
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-server text-amber-600"></i>
+                    </div>
+                    <h4 class="font-canela text-lg font-bold text-gray-800">MCP Servers</h4>
+                  </div>
+                  <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                    Specialized connectors bridging protocol operations to specific external systems and services.
+                  </p>
+                  <div class="bg-amber-50 rounded-lg p-3 text-xs text-amber-800">
+                    <strong>Types:</strong> Data sources, applications, utilities, cloud platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="how-layers-work">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6">How the Layers Work Together</h3>
+
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-8 mb-8">
+              <h4 class="font-canela text-xl font-bold text-gray-800 mb-6">Complete Workflow Example</h4>
+
+              <div class="space-y-6">
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                  <div class="bg-white rounded-lg p-4 flex-1">
+                    <h5 class="font-bold text-gray-800 mb-2">Task Ingestion &amp; Delegation</h5>
+                    <p class="text-gray-600 text-sm">Host agent receives user request, processes intent, decomposes into sub-tasks, and delegates to specialized agents via A2A protocol <a class="citation-link" href="https://www.intuz.com/blog/how-to-build-multi-ai-agent-systems">[102]</a>.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                  <div class="bg-white rounded-lg p-4 flex-1">
+                    <h5 class="font-bold text-gray-800 mb-2">Tool Discovery &amp; Invocation</h5>
+                    <p class="text-gray-600 text-sm">Executing agents use MCP to discover available tools, match capabilities to task requirements, and invoke appropriate services.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                  <div class="bg-white rounded-lg p-4 flex-1">
+                    <h5 class="font-bold text-gray-800 mb-2">Peer Coordination</h5>
+                    <p class="text-gray-600 text-sm">Agents communicate directly via A2A for information queries, collaborative problem-solving, and task handoffs.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                  <div class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
+                  <div class="bg-white rounded-lg p-4 flex-1">
+                    <h5 class="font-bold text-gray-800 mb-2">Context Synchronization</h5>
+                    <p class="text-gray-600 text-sm">Results flow back through MCP to update shared context, creating collective memory for emergent coordination <a class="citation-link" href="https://shiftasia.com/column/explanation-of-model-context-protocol-ai-agent-agentic-ai-multi-ai-agents-and-real-world-examples/">[98]</a>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <img alt="Multi-agent AI system architecture diagram" class="w-full rounded-xl shadow-sm border border-gray-200" src="https://kimi-web-img.moonshot.cn/img/www.altexsoft.com/ad4dc8b2b98db975b7cdc9206b7e85cab1566ea5.png" size="large" aspect="wide" query="multi-agent AI system architecture" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 4: Prototype Development -->
+        <section class="mb-16" id="prototype-development">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">Step-by-Step Prototype Development</h2>
+
+          <div class="space-y-12">
+            <!-- Phase 1 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8" id="phase-1">
+              <div class="flex items-center space-x-4 mb-6">
+                <div class="w-12 h-12 bg-blue-500 text-white rounded-xl flex items-center justify-center">
+                  <i class="fas fa-foundation text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-canela text-2xl font-bold text-gray-800">Phase 1: Foundation and Planning</h3>
+                  <p class="text-gray-600">Define purpose, success criteria, and architectural patterns</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                  <div class="bg-blue-50 rounded-lg p-6">
+                    <h4 class="font-bold text-blue-900 mb-4">Define Success Criteria</h4>
+                    <div class="space-y-3 text-sm">
+                      <div class="flex justify-between">
+                        <span class="text-blue-800">Target users</span>
+                        <span class="text-blue-600">Customer support team</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-blue-800">Current pain points</span>
+                        <span class="text-blue-600">40% escalation, 6hr resolution</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-blue-800">Desired outcomes</span>
+                        <span class="text-blue-600">80% resolution, 2hr avg</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-blue-800">Success metrics</span>
+                        <span class="text-blue-600">Completion rate, CSAT</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-green-50 rounded-lg p-6">
+                    <h4 class="font-bold text-green-900 mb-4">Agent Specializations</h4>
+                    <div class="space-y-2 text-sm">
+                      <div class="flex justify-between">
+                        <span class="text-green-800">Intake/Classification</span>
+                        <span class="text-green-600">NLP, CRM</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-green-800">Research/Retrieval</span>
+                        <span class="text-green-600">Search, DBs</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-green-800">Analysis/Reasoning</span>
+                        <span class="text-green-600">Stats, ML</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-green-800">Generation/Composition</span>
+                        <span class="text-green-600">LLM, Templates</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-green-800">Verification/Validation</span>
+                        <span class="text-green-600">Tests, Rules</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-6">
+                  <div class="bg-purple-50 rounded-lg p-6">
+                    <h4 class="font-bold text-purple-900 mb-4">Architecture Patterns</h4>
+                    <div class="space-y-4">
+                      <div class="border border-purple-200 rounded-lg p-3">
+                        <h5 class="font-bold text-purple-800 text-sm mb-1">Centralized</h5>
+                        <p class="text-purple-600 text-xs">Tight control, shared dependencies, clear accountability</p>
+                      </div>
+                      <div class="border border-purple-200 rounded-lg p-3">
+                        <h5 class="font-bold text-purple-800 text-sm mb-1">Decentralized</h5>
+                        <p class="text-purple-600 text-xs">Dynamic environments, fault tolerance, rapid adaptation</p>
+                      </div>
+                      <div class="border border-purple-200 rounded-lg p-3">
+                        <h5 class="font-bold text-purple-800 text-sm mb-1">Hybrid</h5>
+                        <p class="text-purple-600 text-xs">Balancing control with flexibility, complex workflows</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8" id="phase-2">
+              <div class="flex items-center space-x-4 mb-6">
+                <div class="w-12 h-12 bg-green-500 text-white rounded-xl flex items-center justify-center">
+                  <i class="fas fa-tools text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-canela text-2xl font-bold text-gray-800">Phase 2: MCP Infrastructure Setup</h3>
+                  <p class="text-gray-600">Install SDK, configure clients, and establish server connections</p>
+                </div>
+              </div>
+
+              <div class="bg-gray-900 rounded-xl p-6 mb-6">
+                <h4 class="font-canela text-lg font-bold text-white mb-4">Installation Commands</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h5 class="text-gray-300 text-sm mb-2">Python</h5>
+                    <code class="text-green-400 text-sm">pip install mcp</code>
+                  </div>
+                  <div>
+                    <h5 class="text-gray-300 text-sm mb-2">TypeScript/JavaScript</h5>
+                    <code class="text-green-400 text-sm">npm install @anthropic-ai/mcp</code>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-blue-50 rounded-lg p-6">
+                  <h4 class="font-bold text-blue-900 mb-4">Client Configuration</h4>
+                  <ul class="text-sm text-blue-800 space-y-2">
+                    <li>• Server endpoints</li>
+                    <li>• Authentication credentials</li>
+                    <li>• Capability filtering</li>
+                    <li>• Operational parameters</li>
+                  </ul>
+                </div>
+
+                <div class="bg-green-50 rounded-lg p-6">
+                  <h4 class="font-bold text-green-900 mb-4">Server Options</h4>
+                  <ul class="text-sm text-green-800 space-y-2">
+                    <li>• Adopt existing community servers</li>
+                    <li>• Build custom for proprietary systems</li>
+                    <li>• Vendor-provided implementations</li>
+                    <li>• Enterprise-grade marketplaces</li>
+                  </ul>
+                </div>
+
+                <div class="bg-purple-50 rounded-lg p-6">
+                  <h4 class="font-bold text-purple-900 mb-4">Schema Design</h4>
+                  <ul class="text-sm text-purple-800 space-y-2">
+                    <li>• Input parameter schemas</li>
+                    <li>• Output result structures</li>
+                    <li>• Semantic documentation</li>
+                    <li>• Versioning strategy</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phases 3-6 (condensed for space) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8" id="phase-3">
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="w-10 h-10 bg-purple-500 text-white rounded-lg flex items-center justify-center">
+                    <i class="fas fa-robot"></i>
+                  </div>
+                  <h3 class="font-canela text-xl font-bold text-gray-800">Phase 3: Agent Design</h3>
+                </div>
+                <div class="space-y-4 text-sm">
+                  <div class="bg-purple-50 rounded-lg p-4">
+                    <h4 class="font-bold text-purple-900 mb-2">Agent Profiles</h4>
+                    <p class="text-purple-800">Define identity, functional scope, capability requirements, and operational parameters.</p>
+                  </div>
+                  <div class="bg-purple-50 rounded-lg p-4">
+                    <h4 class="font-bold text-purple-900 mb-2">Framework Options</h4>
+                    <p class="text-purple-800">LangChain/LangGraph, AutoGen, CrewAI for different collaboration patterns.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8" id="phase-4">
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="w-10 h-10 bg-amber-500 text-white rounded-lg flex items-center justify-center">
+                    <i class="fas fa-comments"></i>
+                  </div>
+                  <h3 class="font-canela text-xl font-bold text-gray-800">Phase 4: Communication</h3>
+                </div>
+                <div class="space-y-4 text-sm">
+                  <div class="bg-amber-50 rounded-lg p-4">
+                    <h4 class="font-bold text-amber-900 mb-2">A2A Protocol</h4>
+                    <p class="text-amber-800">Implement Agent Cards, task lifecycle management, and message patterns.</p>
+                  </div>
+                  <div class="bg-amber-50 rounded-lg p-4">
+                    <h4 class="font-bold text-amber-900 mb-2">Coordination Patterns</h4>
+                    <p class="text-amber-800">Sequential handoff, conditional routing, parallel fan-out, iterative refinement.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8" id="phase-5">
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="w-10 h-10 bg-red-500 text-white rounded-lg flex items-center justify-center">
+                    <i class="fas fa-vial"></i>
+                  </div>
+                  <h3 class="font-canela text-xl font-bold text-gray-800">Phase 5: Integration &amp; Testing</h3>
+                </div>
+                <div class="space-y-4 text-sm">
+                  <div class="bg-red-50 rounded-lg p-4">
+                    <h4 class="font-bold text-red-900 mb-2">Test Levels</h4>
+                    <p class="text-red-800">Unit, integration, system, and acceptance testing with realistic scenarios.</p>
+                  </div>
+                  <div class="bg-red-50 rounded-lg p-4">
+                    <h4 class="font-bold text-red-900 mb-2">Failure Scenarios</h4>
+                    <p class="text-red-800">Agent crashes, MCP server downtime, tool errors, network partitions.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8" id="phase-6">
+                <div class="flex items-center space-x-3 mb-6">
+                  <div class="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center">
+                    <i class="fas fa-rocket"></i>
+                  </div>
+                  <h3 class="font-canela text-xl font-bold text-gray-800">Phase 6: Deployment</h3>
+                </div>
+                <div class="space-y-4 text-sm">
+                  <div class="bg-indigo-50 rounded-lg p-4">
+                    <h4 class="font-bold text-indigo-900 mb-2">Monitoring</h4>
+                    <p class="text-indigo-800">Infrastructure health, agent performance, business outcomes.</p>
+                  </div>
+                  <div class="bg-indigo-50 rounded-lg p-4">
+                    <h4 class="font-bold text-indigo-900 mb-2">Scaling</h4>
+                    <p class="text-indigo-800">Agent replication, MCP server scaling, geographic distribution.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 5: Practical Example -->
+        <section class="mb-16" id="example">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">Practical Example: Customer Support Multi-Agent System</h2>
+
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="font-canela text-2xl font-bold text-gray-800">System Overview</h3>
+              <img alt="Customer support automation system with AI agents" class="w-32 h-20 rounded-lg object-cover" src="https://kimi-web-img.moonshot.cn/img/images.ctfassets.net/cda007a73ab5ffa8073dae3d615d60f45f1bd692.png" size="small" aspect="wide" style="photo" query="customer service automation system" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-white rounded-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-3">Goal</h4>
+                <p class="text-gray-600 text-sm">Handle 80% of tier-1 and tier-2 support inquiries without human escalation <a class="citation-link" href="https://www.intuz.com/blog/how-to-build-multi-ai-agent-systems">[102]</a>.</p>
+              </div>
+              <div class="bg-white rounded-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-3">Metrics</h4>
+                <p class="text-gray-600 text-sm">2-hour average resolution (from 6-hour baseline), CSAT &gt;4.2/5.</p>
+              </div>
+              <div class="bg-white rounded-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-3">Scope</h4>
+                <p class="text-gray-600 text-sm">Technical issues, billing inquiries, feature requests, account management.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h3 class="font-canela text-xl font-bold text-gray-800 mb-6">Agent Team Composition</h3>
+              <div class="space-y-4">
+                <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                  <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">I</div>
+                  <div>
+                    <h4 class="font-bold text-gray-800 text-sm">Intake Agent</h4>
+                    <p class="text-gray-600 text-xs">Classify and route tickets using NLP and sentiment analysis</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                  <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold">R</div>
+                  <div>
+                    <h4 class="font-bold text-gray-800 text-sm">Research Agent</h4>
+                    <p class="text-gray-600 text-xs">Query knowledge bases, customer history, technical documentation</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                  <div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold">S</div>
+                  <div>
+                    <h4 class="font-bold text-gray-800 text-sm">Solution Agent</h4>
+                    <p class="text-gray-600 text-xs">Generate and implement resolutions, execute actions</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
+                  <div class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold">E</div>
+                  <div>
+                    <h4 class="font-bold text-gray-800 text-sm">Escalation Agent</h4>
+                    <p class="text-gray-600 text-xs">Handle complex cases requiring human judgment</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-3 p-3 bg-amber-50 rounded-lg">
+                  <div class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">F</div>
+                  <div>
+                    <h4 class="font-bold text-gray-800 text-sm">Follow-up Agent</h4>
+                    <p class="text-gray-600 text-xs">Verify resolution, collect feedback, update records</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h3 class="font-canela text-xl font-bold text-gray-800 mb-6">MCP Integration Flow</h3>
+              <div class="space-y-6">
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="font-bold text-gray-800 text-sm mb-2">1. Intake &amp; Classification</h4>
+                  <p class="text-gray-600 text-xs">Connects to Salesforce MCP Server for customer profile, purchase history, and prior interactions.</p>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="font-bold text-gray-800 text-sm mb-2">2. Research &amp; Synthesis</h4>
+                  <p class="text-gray-600 text-xs">Queries Confluence, Elasticsearch, and Stack Overflow MCP servers for comprehensive information gathering.</p>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-4">
+                  <h4 class="font-bold text-gray-800 text-sm mb-2">3. Solution Execution</h4>
+                  <p class="text-gray-600 text-xs">Invokes Stripe, Internal API, and SendGrid MCP servers for billing adjustments, configuration changes, and customer communications.</p>
+                </div>
+
+                <div class="border-l-4 border-amber-500 pl-4">
+                  <h4 class="font-bold text-gray-800 text-sm mb-2">4. Context Sharing</h4>
+                  <p class="text-gray-600 text-xs">All agents share context updates through CRM records accessed via MCP, maintaining coherent collective understanding <a class="citation-link" href="https://shiftasia.com/column/explanation-of-model-context-protocol-ai-agent-agentic-ai-multi-ai-agents-and-real-world-examples/">[98]</a>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <img alt="AI customer support system handling tickets" class="w-full rounded-xl shadow-sm border border-gray-200" src="https://kimi-web-img.moonshot.cn/img/images.ctfassets.net/cda007a73ab5ffa8073dae3d615d60f45f1bd692.png" size="large" aspect="wide" style="photo" query="AI customer support system" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 6: Key Technologies -->
+        <section class="mb-16" id="technologies">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">Key Technologies and Tools</h2>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h3 class="font-canela text-xl font-bold text-gray-800 mb-6">MCP Ecosystem</h3>
+
+              <div class="space-y-6">
+                <div class="bg-blue-50 rounded-lg p-4">
+                  <h4 class="font-bold text-blue-900 mb-3">Official SDKs</h4>
+                  <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="flex items-center space-x-2">
+                      <i class="fab fa-python text-blue-600"></i>
+                      <span class="text-blue-800">Python (Most mature)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <i class="fab fa-js text-blue-600"></i>
+                      <span class="text-blue-800">TypeScript</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <i class="fab fa-java text-blue-600"></i>
+                      <span class="text-blue-800">Java/Kotlin</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <i class="fas fa-code text-blue-600"></i>
+                      <span class="text-blue-800">C#/.NET</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-green-50 rounded-lg p-4">
+                  <h4 class="font-bold text-green-900 mb-3">Pre-built MCP Servers</h4>
+                  <div class="grid grid-cols-2 gap-2 text-sm text-green-800">
+                    <div>Development: GitHub, GitLab</div>
+                    <div>Communication: Slack, Teams</div>
+                    <div>Data: PostgreSQL, MongoDB</div>
+                    <div>Search: Brave, Google</div>
+                    <div>Cloud: AWS, GCP, Azure</div>
+                    <div>Productivity: Notion, Google Workspace</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h3 class="font-canela text-xl font-bold text-gray-800 mb-6">Complementary Frameworks</h3>
+
+              <div class="space-y-4">
+                <div class="border-l-4 border-purple-500 pl-4">
+                  <h4 class="font-bold text-gray-800 mb-1">A2A Protocol</h4>
+                  <p class="text-gray-600 text-sm">Google&#39;s standard for direct agent communication with Agent Cards and task lifecycle management <a class="citation-link" href="https://www.kdnuggets.com/building-ai-agents-a2a-vs-mcp-explained-simply">[99]</a>.</p>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="font-bold text-gray-800 mb-1">LangChain/LangGraph</h4>
+                  <p class="text-gray-600 text-sm">Modular components, stateful workflows, explicit graph-based control flow with MCP integration <a class="citation-link" href="https://kuchoriyatechsoft.com/blogs/building-agentic-ai-systems">[104]</a>.</p>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="font-bold text-gray-800 mb-1">AutoGen</h4>
+                  <p class="text-gray-600 text-sm">Microsoft&#39;s framework emphasizing conversational multi-agent patterns with human-in-the-loop oversight <a class="citation-link" href="https://www.louisbouchard.ai/multi-agent-system/">[105]</a>.</p>
+                </div>
+
+                <div class="border-l-4 border-amber-500 pl-4">
+                  <h4 class="font-bold text-gray-800 mb-1">CrewAI</h4>
+                  <p class="text-gray-600 text-sm">Role-based collaboration platform focusing on organizational procedure mapping with explicit process definitions.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-8">
+            <h3 class="font-canela text-xl font-bold text-gray-800 mb-6">Ecosystem Growth</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <i class="fas fa-users text-blue-600 text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Community</h4>
+                <p class="text-gray-600 text-sm">Growing open-source contributions and shared implementations</p>
+              </div>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <i class="fas fa-store text-green-600 text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Marketplace</h4>
+                <p class="text-gray-600 text-sm">Emerging commercial marketplaces for enterprise-grade servers</p>
+              </div>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <i class="fas fa-handshake text-purple-600 text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Vendor Support</h4>
+                <p class="text-gray-600 text-sm">Major AI platform providers adopting and supporting MCP</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 7: Pitfalls and Best Practices -->
+        <section class="mb-16" id="pitfalls">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">Common Pitfalls and Best Practices</h2>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-red-50 border border-red-200 rounded-xl p-8">
+              <h3 class="font-canela text-xl font-bold text-red-900 mb-6 flex items-center">
+                <i class="fas fa-exclamation-triangle mr-3"></i>
+                Design Mistakes to Avoid
+              </h3>
+
+              <div class="space-y-6">
+                <div class="bg-white rounded-lg p-4 border border-red-200">
+                  <h4 class="font-bold text-red-900 mb-2">Over-engineering Agent Specializations</h4>
+                  <p class="text-red-800 text-sm">Premature fragmentation creates coordination overhead without proven benefit. Start with minimal viable specialization <a class="citation-link" href="https://www.linkedin.com/pulse/how-build-multi-agent-ai-step-by-step-framework-technology-leaders-2eoxf">[103]</a>.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 border border-red-200">
+                  <h4 class="font-bold text-red-900 mb-2">Neglecting Clear Handoff Protocols</h4>
+                  <p class="text-red-800 text-sm">Ambiguous transitions cause dropped tasks and inconsistent state. Define explicit triggers, information transfer, and verification.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 border border-red-200">
+                  <h4 class="font-bold text-red-900 mb-2">Insufficient Error Handling</h4>
+                  <p class="text-red-800 text-sm">Assumed reliability leads to cascading failures. Implement retry logic, fallbacks, graceful degradation, and escalation paths <a class="citation-link" href="https://www.gravitee.io/blog/mcp-model-context-protocol-agentic-ai">[101]</a>.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-green-50 border border-green-200 rounded-xl p-8">
+              <h3 class="font-canela text-xl font-bold text-green-900 mb-6 flex items-center">
+                <i class="fas fa-check-circle mr-3"></i>
+                Success Patterns
+              </h3>
+
+              <div class="space-y-6">
+                <div class="bg-white rounded-lg p-4 border border-green-200">
+                  <h4 class="font-bold text-green-900 mb-2">Start Small, Expand Incrementally</h4>
+                  <p class="text-green-800 text-sm">Begin with one coordinator and one executor. Validate the foundation before adding specializations. Each agent should justify its coordination overhead <a class="citation-link" href="https://www.intuz.com/blog/how-to-build-multi-ai-agent-systems">[102]</a>.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 border border-green-200">
+                  <h4 class="font-bold text-green-900 mb-2">Invest in Observability</h4>
+                  <p class="text-green-800 text-sm">Distributed systems demand superior visibility. Implement structured logging, distributed tracing, real-time dashboards, and replay capabilities <a class="citation-link" href="https://kuchoriyatechsoft.com/blogs/building-agentic-ai-systems">[104]</a>.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 border border-green-200">
+                  <h4 class="font-bold text-green-900 mb-2">Design for Graceful Degradation</h4>
+                  <p class="text-green-800 text-sm">Resilient systems maintain partial functionality rather than failing completely. Specify degradation levels: full, reduced, minimal, and safe mode.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <h3 class="font-canela text-xl font-bold text-gray-800 mb-6">Implementation Checklist</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-3">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Define clear success criteria and metrics</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Start with minimal viable agent specialization</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Establish MCP infrastructure and connections</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Implement comprehensive error handling</span>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Design clear handoff protocols between agents</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Invest in observability and monitoring</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Plan for graceful degradation and recovery</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-square text-green-500"></i>
+                  <span class="text-gray-700">Test failure scenarios systematically</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 8: Future -->
+        <section class="mb-16" id="future">
+          <h2 class="font-canela text-4xl font-bold text-gray-900 mb-8">The Future: MCP in 2026 and Beyond</h2>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8">
+              <div class="w-16 h-16 bg-blue-500 text-white rounded-xl flex items-center justify-center mb-6">
+                <i class="fas fa-shield-alt text-2xl"></i>
+              </div>
+              <h3 class="font-canela text-xl font-bold text-blue-900 mb-4">Enterprise-Grade Security</h3>
+              <p class="text-blue-800 text-sm leading-relaxed">
+                MCP implementations maturing toward production requirements: fine-grained access control, comprehensive audit trails, data loss prevention, and regulatory compliance <a class="citation-link" href="https://www.gravitee.io/blog/mcp-model-context-protocol-agentic-ai">[101]</a>.
+              </p>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8">
+              <div class="w-16 h-16 bg-green-500 text-white rounded-xl flex items-center justify-center mb-6">
+                <i class="fas fa-brain text-2xl"></i>
+              </div>
+              <h3 class="font-canela text-xl font-bold text-green-900 mb-4">Semantic Routing</h3>
+              <p class="text-green-800 text-sm leading-relaxed">
+                Beyond capability matching, systems incorporating semantic understanding of task requirements to select optimal agent compositions based on implicit needs <a class="citation-link" href="https://www.linkedin.com/pulse/how-build-multi-agent-ai-step-by-step-framework-technology-leaders-2eoxf">[103]</a>.
+              </p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-8">
+              <div class="w-16 h-16 bg-purple-500 text-white rounded-xl flex items-center justify-center mb-6">
+                <i class="fas fa-sync-alt text-2xl"></i>
+              </div>
+              <h3 class="font-canela text-xl font-bold text-purple-900 mb-4">Self-Improving Teams</h3>
+              <p class="text-purple-800 text-sm leading-relaxed">
+                Meta-learning mechanisms enabling agent teams to optimize their own coordination, learn optimal handoff timing, and propose specialization adjustments <a class="citation-link" href="https://www.louisbouchard.ai/multi-agent-system/">[105]</a>.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-8">
+            <h3 class="font-canela text-2xl font-bold text-gray-800 mb-6 text-center">Why Now Is the Time to Build</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="text-center">
+                <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-plug text-amber-600 text-3xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Standardization</h4>
+                <p class="text-gray-600 text-sm">MCP&#39;s emergence as de facto industry standard eliminates integration friction and vendor lock-in concerns <a class="citation-link" href="https://shiftasia.com/column/explanation-of-model-context-protocol-ai-agent-agentic-ai-multi-ai-agents-and-real-world-examples/">[98]</a>.</p>
+              </div>
+              <div class="text-center">
+                <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-puzzle-piece text-amber-600 text-3xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Growing Ecosystem</h4>
+                <p class="text-gray-600 text-sm">Combinatorial explosion of capability from pre-built components enables rapid assembly of sophisticated systems <a class="citation-link" href="https://www.gravitee.io/blog/mcp-model-context-protocol-agentic-ai">[101]</a>.</p>
+              </div>
+              <div class="text-center">
+                <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-trophy text-amber-600 text-3xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Competitive Advantage</h4>
+                <p class="text-gray-600 text-sm">Early adopters capturing sustainable advantages through autonomous operations and continuous improvement <a class="citation-link" href="https://www.intuz.com/blog/build-multi-agent-system-with-a2a-mcp-server">[64]</a>.</p>
+              </div>
+            </div>
+
+            <div class="pull-quote font-canela text-center mt-8">
+              &#34;The window for differentiation through multi-agent sophistication is narrowing as adoption accelerates—<strong>the time to build is now</strong>.&#34;
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-gray-200 pt-12 pb-8">
+          <div class="text-center">
+            <p class="text-gray-600 text-sm">
+              This guide represents current best practices in multi-agentic AI system development. As the field evolves rapidly, stay updated with the latest MCP specifications and community contributions.
+            </p>
+            <div class="flex justify-center space-x-6 mt-6">
+              <a class="citation-link text-sm" href="https://www.intuz.com/blog/build-multi-agent-system-with-a2a-mcp-server">[64] Intuz - Multi-Agent Systems</a>
+              <a class="citation-link text-sm" href="https://www.gravitee.io/blog/mcp-model-context-protocol-agentic-ai">[101] Gravitee - MCP Protocol</a>
+              <a class="citation-link text-sm" href="https://www.intuz.com/blog/how-to-build-multi-ai-agent-systems">[102] Intuz - Building AI Agents</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+        // Table of Contents scroll behavior
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocLinks = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('section[id], div[id]');
+            
+            // Smooth scrolling for TOC links
+            tocLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Update active TOC link on scroll
+            window.addEventListener('scroll', function() {
+                let current = '';
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 100) {
+                        current = section.id;
+                    }
+                });
+                
+                tocLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Mobile TOC toggle (if needed)
+            const tocToggle = document.createElement('button');
+            tocToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            tocToggle.className = 'fixed top-4 left-4 z-50 bg-white p-3 rounded-lg shadow-lg lg:hidden';
+            tocToggle.addEventListener('click', function() {
+                document.querySelector('.toc-fixed').classList.toggle('open');
+            });
+            document.body.appendChild(tocToggle);
+        });
+    </script>
+
+  
+
+</body></html>
